@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+  <title>My Quiz</title>
+
+  <link rel="stylesheet" href="vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div id="welcome-page" class="page hide">
+    <h1>Welcome</h1>
+  </div>
+
+  <div id="quiz-page" class="page hide">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="javascript:void(0);">My Quiz</a>
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+      <div id="questions-progress">
+        <script type="text/ejs-template">
+          <div class="progress">
+            <div class="progress-bar" style="width: <%= progress.percentage %>%;">
+              <%= progress.currentQuestion + ' of ' + progress.totalQuestion %>
+            </div>
+          </div>
+        </script>
+      </div>
+
+      <div id="question">
+        <script type="text/ejs-template">
+          <div class="page-header">
+            <h1><%= question.title %></h1>
+          </div>
+          <ul class="list-group">
+            <% question.options.forEach(function(option){ %>
+              <li class="list-group-item">
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="option" value="<%= option %>" onclick="setAnswer(this.value)" <%= isUserAnswer(option)? 'checked="checked"' : '' %>>
+                    <%= option %>
+                  </label>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        </script>
+      </div><!-- #question -->
+
+      <div id="action-buttons">
+        <script type="text/ejs-template">
+          <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+              <% if(actionButtons.prev){ %>
+                <button type="button" class="btn btn-info" onclick="prevQuestion()">Back</button>
+              <% } else { %>
+                <button type="button" class="btn btn-default" disabled="disabled">Back</button>
+              <% } %>
+            </div>
+            <div class="btn-group" role="group">
+              <% if(actionButtons.finish){ %>
+                <button type="button" class="btn btn-success" onclick="setPage('#result-page')">Finish</button>
+              <% } else { %>
+                <button type="button" class="btn btn-default" disabled="disabled">Finish</button>
+              <% } %>
+            </div>
+            <div class="btn-group" role="group">
+              <% if(actionButtons.next){ %>
+                <button type="button" class="btn btn-primary" onclick="nextQuestion()">Next</button>
+              <% } else { %>
+                <button type="button" class="btn btn-default" disabled="disabled">Next</button>
+              <% } %>
+            </div>
+          </div>
+        </script>
+      </div><!-- #action-buttons -->
+    </div><!-- .container -->
+
+  </div><!-- #quiz-page -->
+
+  <div id="result-page" class="page hide">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="javascript:void(0);">My Quiz</a>
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+      <div id="result">
+        <script type="text/ejs-template">
+          <div class="text-center">
+            <h1>Result</h1>
+            <p><%= result.totalCorrectAnswers %> of <%= result.totalQuestions %></p>
+            <p><%= result.percentage %>%</p>
+            <p class="lead"><%= result.comment %></p>
+          </div>
+        </script>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="tryAgain()">
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <script src="vendor/jquery-3.1.1.min.js"></script>
+  <script src="vendor/ejs.min.js"></script>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
